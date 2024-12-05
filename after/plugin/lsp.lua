@@ -17,7 +17,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-    ensure_installed = { 'rust_analyzer', 'jdtls', 'pyright', 'ruff_lsp', 'yamlls' },
+    ensure_installed = { 'rust_analyzer', 'jdtls', 'pyright', 'ruff', 'yamlls' },
     handlers = {
         lsp_zero.default_setup,
         lua_ls = function()
@@ -40,14 +40,14 @@ require('mason-lspconfig').setup({
                 },
             }
         end,
-        ruff_lsp = function()
+        ruff = function()
             local on_attach = function(client, bufnr)
-                if client.name == 'ruff_lsp' then
+                if client.name == 'ruff' then
                     -- Disable hover in favor of Pyright
                     client.server_capabilities.hoverProvider = false
                 end
             end
-            require('lspconfig').ruff_lsp.setup {
+            require('lspconfig').ruff.setup {
                 on_attach = on_attach,
                 init_options = {
                     settings = {
@@ -76,7 +76,7 @@ lsp_zero.format_on_save({
         ['rust_analyzer'] = { 'rust' },
         ['jdtls'] = { 'java' },
         ['terraformls'] = { 'terraform' },
-        ['ruff_lsp'] = { 'python' },
+        ['ruff'] = { 'python' },
         ['lua_ls'] = { 'lua' },
         ['yamlls'] = { 'yaml', 'yml' },
     }
