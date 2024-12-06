@@ -79,6 +79,7 @@ lsp_zero.format_on_save({
         ['ruff_lsp'] = { 'python' },
         ['lua_ls'] = { 'lua' },
         ['yamlls'] = { 'yaml', 'yml' },
+        ['gopls'] = {'go'},
     }
 })
 
