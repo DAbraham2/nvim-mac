@@ -4,6 +4,7 @@ local dap = require('dap')
 dap_go.setup()
 
 vim.keymap.set('n', '<Leader>db', function() require('dap').continue() end)
+vim.keymap.set('n', '<leader>dbt', function() require('dap-go').debug_test() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
 vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
