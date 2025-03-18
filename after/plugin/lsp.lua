@@ -57,6 +57,11 @@ require('mason-lspconfig').setup({
                 }
             }
         end,
+        yamlls = function()
+            require('lspconfig').yamlls.setup {
+                filetypes = { "yaml", "yaml-jinja" }
+            }
+        end
     }
 })
 

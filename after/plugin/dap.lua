@@ -1,10 +1,15 @@
 local dap_go = require('dap-go')
 local dap = require('dap')
+local dap_python = require('dap-python')
 
 dap_go.setup()
+dap_python.setup()
+
+dap_python.test_runner = 'pytest'
 
 vim.keymap.set('n', '<Leader>db', function() require('dap').continue() end)
 vim.keymap.set('n', '<leader>dbt', function() require('dap-go').debug_test() end)
+vim.keymap.set('n', '<leader>dpt', function() require('dap-python').test_method() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
 vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
