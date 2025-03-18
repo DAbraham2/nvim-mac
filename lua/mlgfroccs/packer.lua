@@ -47,5 +47,7 @@ return require('packer').startup(function(use)
         }
     }
     use('mfussenegger/nvim-dap')
+    use('mfussenegger/nvim-dap-python')
     use('leoluz/nvim-dap-go')
+    use('HiPhish/jinja.vim')
 end)
