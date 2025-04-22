@@ -27,6 +27,13 @@ return require('packer').startup(function(use)
     use('theprimeagen/harpoon')
     use('tpope/vim-fugitive')
     use {
+        'kristijanhusak/vim-dadbod-ui',
+        requires = {
+            { 'tpope/vim-dadbod' },
+            { 'kristijanhusak/vim-dadbod-completion' }
+        }
+    }
+    use {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
         requires = {
@@ -49,5 +56,4 @@ return require('packer').startup(function(use)
     use('mfussenegger/nvim-dap')
     use('mfussenegger/nvim-dap-python')
     use('leoluz/nvim-dap-go')
-    use('HiPhish/jinja.vim')
 end)
