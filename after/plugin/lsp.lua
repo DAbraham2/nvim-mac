@@ -51,9 +51,11 @@ require('mason-lspconfig').setup({
                 on_attach = on_attach,
                 init_options = {
                     settings = {
-                        lint = { args = { "--line-length=88" } },
-                        format = { args = { "--line-length=88", "quote-style=single" } },
-                    },
+                        lineLength = 88,
+                        format = {
+                            ["quote-style"] = "single"
+                        }
+                    }
                 }
             }
         end,
