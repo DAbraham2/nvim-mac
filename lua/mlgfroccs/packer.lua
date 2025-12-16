@@ -1,45 +1,55 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+  if vim.v.shell_error ~= 0 then
+    vim.api.nvim_echo({
+      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+      { out, "WarningMsg" },
+      { "\nPress any key to exit..." },
+    }, true, {})
+    vim.fn.getchar()
+    os.exit(1)
+  end
+end
+vim.opt.rtp:prepend(lazypath)
 
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function(use)
-    -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
-
-    use {
+return require('lazy').setup({
+    install = {colorscheme={"habamax"}},
+    checker = {enabled=true},
+    spec = {
+        {
         'nvim-telescope/telescope.nvim', tag = '0.1.8',
         -- or                            , branch = '0.1.x',
+        lazy=false,
         requires = { { 'nvim-lua/plenary.nvim' } }
-    }
+    },
 
-    use({
+    {
         'rose-pine/neovim',
         as = 'rose-pine',
         config = function()
             vim.cmd('colorscheme rose-pine')
         end
-    })
-    use('ThePrimeagen/vim-be-good')
+    },
+    {
+  "vhyrro/luarocks.nvim",
+  priority = 1000, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+  config = true,
+},
+    {'ThePrimeagen/vim-be-good'},
 
-    use('github/copilot.vim')
-
-    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-    use("nvim-treesitter/nvim-treesitter-context")
-    use('mbbill/undotree')
-    use('theprimeagen/harpoon')
-    use('tpope/vim-fugitive')
-    use {
-        'kristijanhusak/vim-dadbod-ui',
-        requires = {
-            { 'tpope/vim-dadbod' },
-            { 'kristijanhusak/vim-dadbod-completion' }
-        }
-    }
-    use {
+    {'nvim-treesitter/nvim-treesitter', lazy=false, build = ':TSUpdate' },
+    {"nvim-treesitter/nvim-treesitter-context"},
+    {'mbbill/undotree'},
+    {'theprimeagen/harpoon'},
+    {'tpope/vim-fugitive'},
+    {
         'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        requires = {
+        branch = 'v4.x',
+        dependencies = {
             { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },
 
@@ -55,9 +65,10 @@ return require('packer').startup(function(use)
             { 'rafamadriz/friendly-snippets' },
             { 'saadparwaiz1/cmp_luasnip' }
         }
-    }
-    use('mfussenegger/nvim-dap')
-    use('mfussenegger/nvim-dap-python')
-    use('leoluz/nvim-dap-go')
-    use('ellisonleao/dotenv.nvim')
-end)
+    },
+    {'mfussenegger/nvim-dap'},
+    {'mfussenegger/nvim-dap-python'},
+    {'leoluz/nvim-dap-go'},
+    {'ellisonleao/dotenv.nvim'},
+},
+})
