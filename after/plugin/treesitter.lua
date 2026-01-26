@@ -1,4 +1,4 @@
-require 'nvim-treesitter'.setup {
+--[[ require 'nvim-treesitter'.setup {
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
     ensure_installed = { "rust", "python", "go", "lua", "vim", "vimdoc", "query", "java", "c" },
 
@@ -11,4 +11,12 @@ require 'nvim-treesitter'.setup {
 
         additional_vim_regex_highlighting = false,
     },
-}
+}]]
+
+require 'nvim-treesitter'.install { "rust", "python", "go", "lua", "vim", "vimdoc", "query", "java", "c"}
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'lua' },
+  callback = function() vim.treesitter.start() end,
+})
+

@@ -21,8 +21,8 @@ return require('lazy').setup({
     checker = {enabled=true},
     spec = {
         {
-        'nvim-telescope/telescope.nvim', tag = '0.1.8',
-        -- or                            , branch = '0.1.x',
+        'nvim-telescope/telescope.nvim', --tag = '0.1.8',
+                                     branch = 'master',
         lazy=false,
         requires = { { 'nvim-lua/plenary.nvim' } }
     },
@@ -42,6 +42,7 @@ return require('lazy').setup({
     {'ThePrimeagen/vim-be-good'},
 
     {'nvim-treesitter/nvim-treesitter', lazy=false, build = ':TSUpdate' },
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install' },
     {"nvim-treesitter/nvim-treesitter-context"},
     {'mbbill/undotree'},
     {'theprimeagen/harpoon'},
