@@ -1,5 +1,5 @@
 return
---[=====[{
+{
     "ThePrimeagen/99",
     config = function()
         local _99 = require("99")
@@ -22,7 +22,7 @@ return
                 source = "cmp",
             },
 
-            model = "lmstudio/meta-llama-3.1-8b-instruct",
+            -- model = "lmstudio/meta-llama-3.1-8b-instruct",
 
             --- WARNING: if you change cwd then this is likely broken
             --- ill likely fix this in a later change
@@ -71,7 +71,7 @@ return
         end)
     end,
 }
---]=====]
+--[=====[
 {
     "NickvanDyke/opencode.nvim",
     dependencies = {
@@ -111,3 +111,4 @@ return
         vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
     end,
 }
+--]=====]
