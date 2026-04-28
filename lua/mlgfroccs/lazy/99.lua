@@ -1,0 +1,113 @@
+return
+--[=====[{
+    "ThePrimeagen/99",
+    config = function()
+        local _99 = require("99")
+
+        -- For logging that is to a file if you wish to trace through requests
+        -- for reporting bugs, i would not rely on this, but instead the provided
+        -- logging mechanisms within 99.  This is for more debugging purposes
+        local cwd = vim.uv.cwd()
+        local basename = vim.fs.basename(cwd)
+        _99.setup({
+            logger = {
+                level = _99.DEBUG,
+                path = basename .. ".99.debug",
+                print_on_error = true,
+            },
+            completion = {
+                custom_rules = {
+                    "scratch/custom_rules/",
+                },
+                source = "cmp",
+            },
+
+            model = "lmstudio/meta-llama-3.1-8b-instruct",
+
+            --- WARNING: if you change cwd then this is likely broken
+            --- ill likely fix this in a later change
+            ---
+            --- md_files is a list of files to look for and auto add based on the location
+            --- of the originating request.  That means if you are at /foo/bar/baz.lua
+            --- the system will automagically look for:
+            --- /foo/bar/AGENT.md
+            --- /foo/AGENT.md
+            --- assuming that /foo is project root (based on cwd)
+            md_files = {
+                "AGENT.md",
+            },
+        })
+
+        -- Create your own short cuts for the different types of actions
+        vim.keymap.set("n", "<leader>9f", function()
+            _99.fill_in_function()
+        end)
+        -- take extra note that i have visual selection only in v mode
+        -- technically whatever your last visual selection is, will be used
+        -- so i have this set to visual mode so i dont screw up and use an
+        -- old visual selection
+        --
+        -- likely ill add a mode check and assert on required visual mode
+        -- so just prepare for it now
+        vim.keymap.set("v", "<leader>9v", function()
+            _99.visual()
+        end)
+
+        --- if you have a request you dont want to make any changes, just cancel it
+        vim.keymap.set("v", "<leader>9s", function()
+            _99.stop_all_requests()
+        end)
+
+        --- Example: Using rules + actions for custom behaviors
+        --- Create a rule file like ~/.rules/debug.md that defines custom behavior.
+        --- For instance, a "debug" rule could automatically add printf statements
+        --- throughout a function to help debug its execution flow.
+        vim.keymap.set("n", "<leader>9fd", function()
+            _99.fill_in_function()
+        end)
+
+        vim.keymap.set('v', '<leader>9w', function()
+            _99.visual_prompt()
+        end)
+    end,
+}
+--]=====]
+{
+    "NickvanDyke/opencode.nvim",
+    dependencies = {
+        -- Recommended for `ask()` and `select()`.
+        -- Required for `snacks` provider.
+        ---@module 'snacks' <- Loads `snacks.nvim` types for configuration intellisense.
+        { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
+    },
+    config = function()
+        ---@type opencode.Opts
+        vim.g.opencode_opts = {
+            -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition" on the type or field.
+        }
+
+        -- Required for `opts.events.reload`.
+        vim.o.autoread = true
+
+        -- Recommended/example keymaps.
+        vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end,
+            { desc = "Ask opencode…" })
+        vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,
+            { desc = "Execute opencode action…" })
+        vim.keymap.set({ "n", "t" }, "<C-.>", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
+
+        vim.keymap.set({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
+            { desc = "Add range to opencode", expr = true })
+        vim.keymap.set("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
+            { desc = "Add line to opencode", expr = true })
+
+        vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,
+            { desc = "Scroll opencode up" })
+        vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end,
+            { desc = "Scroll opencode down" })
+
+        -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o…".
+        vim.keymap.set("n", "+", "<C-a>", { desc = "Increment under cursor", noremap = true })
+        vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement under cursor", noremap = true })
+    end,
+}
